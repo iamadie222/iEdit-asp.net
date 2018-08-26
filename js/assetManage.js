@@ -34,6 +34,9 @@ function updateDialog(e) {
 function loadIntoTable(jData,start,end) {
     $("#acListBody").empty();
     for (var i = start; i < end; i++) {
+        if(i>=jData.length){
+            break;
+        }
         $("#acListBody").append('<tr> \
 						<td>' + jData[i].id + '</td>\
 						<td>' + jData[i].name + '</td>\
@@ -48,6 +51,48 @@ function loadIntoTable(jData,start,end) {
     }
 }
 
+function dataNext() {
+    if (listEnd + 20 < jData.length) {
+        $(".page-item").removeClass("active");
+        listEnd += 20;
+        listStart += 20;
+        loadIntoTable(jData, listStart, listEnd);
+        $(".page-item").eq((listStart / 20)+1).addClass("active");
+    }
+}
+
+function dataPrev() {
+    if (listStart - 20 >= 0) {
+        $(".page-item").removeClass("active");
+        listEnd -= 20;
+        listStart -= 20;
+        loadIntoTable(jData, listStart, listEnd);
+        $(".page-item").eq((listStart / 20)+1).addClass("active");
+    }
+}
+function dataNum(num, e) {
+    if (e) {
+       
+        $(".page-item").removeClass("active");
+        $(e).parent().addClass("active");
+    }
+    if (num * 20 >= 0 || num * 20 < jData.length) {
+        listStart = num * 20;
+        listEnd = listStart + 20;
+        loadIntoTable(jData, listStart, listEnd);
+    }
+}
+
+function applyPagination(len) {
+    $("#pagination").empty();
+    $("#pagination").append('<li class="page-item"><a class="page-link" href="#" onclick="dataPrev()">Prev</a></li>');
+    for (var i = 0; i < len; i += 20) {
+        $("#pagination").append('<li class="page-item"><a class="page-link" href="#" onclick="dataNum(' + (i / 20) + ',this)">' + ((i / 20)+1) + '</a></li>');
+    }
+    $("#pagination").append('<li class="page-item"><a class="page-link" href="#" onclick="dataNext()">Next</a></li>');
+    $(".page-item").eq((listStart / 20) + 1).addClass("active");
+}
+
 function loadData() {
     $.ajax({
         url: "dataModel.aspx",
@@ -56,7 +101,7 @@ function loadData() {
         success: function (data) {
             window.jData = JSON.parse(data);
             loadIntoTable(jData, listStart, listEnd);
-
+            applyPagination(jData.length);
         },
         error: function () {
             alert("Problem with request");

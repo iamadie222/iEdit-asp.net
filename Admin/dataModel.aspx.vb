@@ -55,6 +55,16 @@ Partial Class Admin_dataModel
             Else
                 Response.Write("error")
             End If
+        ElseIf Request.Params("listUsers") <> "" Then
+
+        ElseIf Request.Params("listUserPhotos") <> "" Then
+
+        ElseIf Request.Params("deleteAsset") <> "" Then
+
+        ElseIf Request.Params("deleteAsset") <> "" Then
+
+        ElseIf Request.Params("deleteAsset") <> "" Then
+
         End If
     End Sub
 

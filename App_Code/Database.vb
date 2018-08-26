@@ -6,6 +6,7 @@ Public Class Database
 
     Function dbNonQuery(ByVal query As String) As Integer
         Dim cmd As New SqlCommand(query, con)
+
         Dim res = -1
         Try
             con.Open()
@@ -13,6 +14,7 @@ Public Class Database
             con.Close()
             Return res
         Catch ex As Exception
+
             MsgBox(ex.Message)
             Return 0
         Finally
@@ -29,7 +31,7 @@ Public Class Database
             con.Close()
             Return res
         Catch ex As Exception
-            Return ex.Message
+            Return res
         Finally
             con.Close()
         End Try
@@ -60,15 +62,16 @@ Public Class Database
         Next
         Return Jserializer.Serialize(rowsList)
     End Function
-    Function dbReader(ByVal query As String) As Object
+    Function dbReader(ByVal query As String) As SqlDataReader
         Dim cmd As New SqlCommand(query, con)
-        Dim res = ""
+        Dim res As SqlDataReader
         Try
             con.Open()
-            res = cmd.ExecuteScalar()
-            con.Close()
+            res = cmd.ExecuteReader()
+
             Return res
         Catch ex As Exception
+            MsgBox(ex.Message)
             Return res
         Finally
             con.Close()

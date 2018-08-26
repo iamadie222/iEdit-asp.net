@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Admin/Admin.master" AutoEventWireup="false" CodeFile="Cliparts.aspx.vb" Inherits="Admin_Default" %>
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Admin/Admin.master" AutoEventWireup="false" CodeFile="Frames.aspx.vb" Inherits="Admin_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
@@ -6,7 +6,7 @@
         
         <div class="row">
 					<div class="col">
-						<button class="btn btn-primary" type="button" style="margin:10px;float:right;" onclick="addDialog()">Add Clipart</button>
+						<button class="btn btn-primary" type="button" style="margin:10px;float:right;" onclick="addDialog()">Add Frame</button>
 					</div>
 				</div>
             <table class="table table-candenced">
@@ -47,7 +47,7 @@
 				
 				<tr>
 					<td></td>
-                    <input type="hidden" name="type" value="clipart" id="assetType">
+                    <input type="hidden" name="type" value="frame" id="assetType">
 					<td><input type="button" name="add" value="Submit" id="addBtn" class="btn btn-primary"> </td>
 				</tr>
 			</table>
@@ -75,8 +75,8 @@
 				
 				<tr>
 					<td></td>
-                    <input type="hidden" name="id" value="clipart" id="id1">
-                    <input type="hidden" name="type" value="clipart" id="type1">
+                    <input type="hidden" name="id" id="id1">
+                    <input type="hidden" name="type" value="frame" id="type1">
 					<td><input type="button" name="add" value="Update" id="updateBtn" class="btn btn-primary"> </td>
 				</tr>
 			</table>

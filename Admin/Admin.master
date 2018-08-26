@@ -40,28 +40,28 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="Default.aspx">
                   Dashboard 
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="users.php">
+                <a class="nav-link" href="Users.aspx">
                   Users
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="user_photos.php">
+                <a class="nav-link" href="UserPhotos.aspx">
                   User Photos
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="cliparts.php">
+                <a class="nav-link" href="Cliparts.aspx">
                   
                   Cliparts
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="frames.php">
+                <a class="nav-link" href="Frames.aspx">
                   Frames
                 </a>
               </li>   
