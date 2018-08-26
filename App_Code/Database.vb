@@ -75,4 +75,11 @@ Public Class Database
         End Try
         Return res
     End Function
+    Function nextId(ByVal table As String, ByVal col As String) As Integer
+        Dim rs = dbScalar("select max(" & col & ") from " & table)
+        If Not IsDBNull(rs) Then
+            Return Val(rs) + 1
+        End If
+        Return 0
+    End Function
 End Class

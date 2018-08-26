@@ -1,41 +1,61 @@
-﻿
+﻿window.listStart = 0;
+window.listEnd = 20;
 $(document).ready(function () {
-    //loadData();
+    loadData();
     $("#addBtn").click(function () {
-        addRequest();
+        addAssetFunction();
     });
     $("#updateBtn").click(function () {
-        updateRequest();
+        updateAssetFunction();
+    });
+    $("#inputFile").change(function () {
+        loadModelImage(this);
+    });
+    $("#inputFile1").change(function () {
+        loadModelImage(this);
     });
 });
 
-function addAccountDialog() {
+function addDialog() {
     $("#addDialog").show(500);
+    $("#assetName").val("");
+    $("#inputFile").val("");
+    $("#modelImage")[0].src="";
+
+}
+function updateDialog(e) {
+    allTds = $(e).parents("tr").eq(0).children();
+    $("#id1").val(allTds[0].innerHTML);
+    $("#name1").val(allTds[1].innerHTML);
+    $("#modelImage1")[0].src = $(allTds[2]).find("img")[0].src;
+    $("#updateDialog").show(500); 
 }
 
+function loadIntoTable(jData,start,end) {
+    $("#acListBody").empty();
+    for (var i = start; i < end; i++) {
+        $("#acListBody").append('<tr> \
+						<td>' + jData[i].id + '</td>\
+						<td>' + jData[i].name + '</td>\
+						<td> <img src="../assets/' + jData[i].id + '.png?' + Date.now() + '" height=100> </td>\
+						<td>'
+
+						+ "<button class='btn btn-info' style='margin-right:20px;' onclick='updateDialog(this)'>Update </button>"
+						+ "<button class='btn btn-danger' onclick='deleteAssetFunction(" + jData[i].id + ")'>Delete </button>" +
+
+						'</td>\
+					</tr>');
+    }
+}
 
 function loadData() {
     $.ajax({
         url: "dataModel.aspx",
         type: "POST",
-        data: { all_accounts: "yes" },
+        data: { listAssets: "yes", type: $("#assetType").val() },
         success: function (data) {
-            var jData = JSON.parse(data);
-            $("#acListBody").empty();
-            for (i in jData) {
-                $("#acListBody").append('<tr> \
-						<td>' + jData[i].id + '</td>\
-						<td>' + jData[i].ac_name + '</td>\
-						<td>' + jData[i].ac_type + '</td>\
-						<td>' + jData[i].ac_balance + '</td>\
-						<td>'
-
-						+ "<button class='btn btn-info' style='margin-right:20px;' onclick='updateAccountFunction(this)'>Update </button>"
-						+ "<button class='btn btn-danger' onclick='deleteAccountRequest(" + jData[i].id + ")'>Delete </button>" +
-
-						'</td>\
-					</tr>');
-            }
+            window.jData = JSON.parse(data);
+            loadIntoTable(jData, listStart, listEnd);
 
         },
         error: function () {
@@ -43,8 +63,8 @@ function loadData() {
         }
     });
 }
-function addRequest() {
-    if ($("#acName").val() == "") {
+function addRequest(imgUri) {
+    if ($("#assetName").val() == "") {
         alert("Enter Name");
         return;
     }
@@ -52,40 +72,40 @@ function addRequest() {
         url: "dataModel.aspx",
         type: "POST",
         data: {
-            "ac-add": "true",
-            "ac-name": $("#acName").val(),
-            "ac-type": $("#acType").val(),
-            "ac-balance": $("#acBalance").val()
+            "addAsset": "true",
+            "name": $("#assetName").val(),
+            "type": $("#assetType").val(),
+            "imageData": imgUri
         },
         success: function (data) {
             console.log(data);
             if (data == "success") {
-                //alert("Account Added Successfully");
-                loadAccounts();
-                $("#addAcDialog").hide(500);
+                loadData();
+                $("#addDialog").hide(500);
             }
             else {
                 alert("Error occured: ", data);
             }
         },
         error: function (err) {
-            console.log("er: ", err)
+            console.log("er: ", err.responseText)
+            
         }
     });
 }
-function deleteAccountRequest(id) {
+function deleteAssetFunction(id) {
     $.ajax({
         url: "dataModel.aspx",
         type: "POST",
         data: {
-            "ac-delete": true,
+            "deleteAsset": true,
             id: id
         },
         success: function (data) {
             console.log(data);
             if (data == "success") {
-                //alert("Account Deleted Successfully");
-                loadAccounts();
+                
+                loadData();
             }
             else {
                 alert("Error occured: ", data);
@@ -96,9 +116,8 @@ function deleteAccountRequest(id) {
         }
     });
 }
-function updateAccountRequest() {
-    window.updateAccount = false;
-    if ($("#acName").val() == "") {
+function updateRequest(imgUri) {
+    if ($("#name1").val() == "") {
         alert("Enter Name");
         return;
     }
@@ -106,21 +125,20 @@ function updateAccountRequest() {
         url: "dataModel.aspx",
         type: "POST",
         data: {
-            "ac-update": "true",
-            "ac-name": $("#acName").val(),
-            "ac-type": $("#acType").val(),
-            "id": window.id,
-            "ac-balance": $("#acBalance").val()
+            "updateAsset": "true",
+            "name": $("#name1").val(),
+            "type": $("#type1").val(),
+            "imageData": imgUri,
+            "id": $("#id1").val()
         },
         success: function (data) {
             console.log(data);
             if (data == "success") {
-                //alert("Account Added Successfully");
-                loadAccounts();
-                $("#addAcDialog").hide(500);
+                loadData();
+                $("#updateDialog").hide(500);
             }
             else {
-                alert("Error occured: ", data);
+                alert("Error occured: "+ data);
             }
         },
         error: function (err) {
@@ -128,13 +146,34 @@ function updateAccountRequest() {
         }
     });
 }
-function updateAccountFunction(e) {
-    window.e = e;
-    allTds = $(e).parents("tr").eq(0).children();
-    window.updateAccount = true;
-    window.id = parseInt(allTds[0].innerHTML);
-    $("#acName").val(allTds[1].innerHTML);
-    $("#acType").val(allTds[2].innerHTML);
-    $("#acBalance").val(allTds[3].innerHTML);
-    $("#addAcDialog").show(500);
+
+function addAssetFunction() {
+    var r = new FileReader();
+    r.readAsDataURL($("#inputFile")[0].files[0]);
+    $(this).hide();
+    r.onload = function (d) {
+        addRequest(d.target.result.replace('data:image/png;base64,', ''));
+
+    }
+}
+function loadModelImage(e) {
+    var r = new FileReader();
+    r.readAsDataURL(e.files[0]);
+    r.onload = function (d) {
+        $("#modelImage")[0].src = d.target.result;
+        $("#modelImage1")[0].src = d.target.result;
+    }
+}
+
+function updateAssetFunction() {
+    if ($("#inputFile1").val()=="") {
+        updateRequest("no");
+        return;
+    }
+    var r = new FileReader();
+    r.readAsDataURL($("#inputFile1")[0].files[0]);
+    r.onload = function (d) {
+        updateRequest(d.target.result.replace('data:image/png;base64,', ''));
+
+    }
 }
