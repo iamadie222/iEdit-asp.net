@@ -37,6 +37,8 @@ Partial Class Admin_dataModel
                 Response.Write("userNotFound")
             End If
         ElseIf Request.Params("userLogOut") <> "" Then
+            Session("userLogged") = ""
+            Response.Redirect("Default.aspx")
 
         ElseIf Request.Params("deleteAsset") <> "" Then
 

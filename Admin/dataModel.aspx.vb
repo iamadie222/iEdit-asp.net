@@ -56,11 +56,20 @@ Partial Class Admin_dataModel
                 Response.Write("error")
             End If
         ElseIf Request.Params("listUsers") <> "" Then
-
+            Dim res = db.sqlQueryJson("select * from users")
+            Response.Write(res)
         ElseIf Request.Params("listUserPhotos") <> "" Then
 
-        ElseIf Request.Params("deleteAsset") <> "" Then
+        ElseIf Request.Params("userStatusChange") <> "" Then
 
+            Dim userId = Request.Params("userStatusChange")
+            Dim status = Request.Params("status")
+            Dim res = db.dbNonQuery("update users set status=" & status & "  where id=" & userId)
+            If res Then
+                Response.Write("success")
+            Else
+                Response.Write("error")
+            End If
         ElseIf Request.Params("deleteAsset") <> "" Then
 
         ElseIf Request.Params("deleteAsset") <> "" Then

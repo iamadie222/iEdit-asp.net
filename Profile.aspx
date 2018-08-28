@@ -1,67 +1,80 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Front.master" AutoEventWireup="false" CodeFile="Profile.aspx.vb" Inherits="Default4" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
  <!-- Page Content -->
-    <div class="container-flued ieditor-workspace">
-		<div class="row">
-			<div class="col-md-12 col-xs-12">
-				<div class="edit-area" id="editArea">
-					<div class="upload-btn">
-						<input type="file" id="uploadPhoto" >
-					</div>
-					<svg id="mainSvg" viewBox="0 0 1000 1000" style="border:0px solid red"  preserveAspectRatio="none">
-						
-					</svg>
-	
-				</div>
-				
-			</div>
-			<div class="side-panel" id="sidePanel">
-				<div class="effect-area">
-					<div class="effict-grid container-flued">
-						<div class="row">
-							<div class="col"><img src="" class="effict-img"></div>
-							<div class="col"><img src="" class="effict-img"></div>
-						</div>
-						<div class="row">
-							<div class="col"><img src="" class="effict-img"></div>
-							<div class="col"><img src="" class="effict-img"></div>
-						</div>
-						<div class="row">
-							<div class="col"><img src="" class="effict-img"></div>
-							<div class="col"><img src="" class="effict-img"></div>
-						</div>
-					</div>
-				</div>
-				<div id="textToolArea">
-					
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="tool-area container-flued">
-					<div class="tool "><i class="fa fa-crop"></i><small class="d-none d-sm-block">Crop</small></div>
-					<div class="tool "><i class="fa fa-expand-arrows-alt"></i><small class="d-none d-sm-block">Resize</small></div>
-					<div class="tool "><i class="fa fa-asterisk"></i><small class="d-none d-sm-block">Clipart</small></div>
-					<div class="tool "><i class="far fa-square"></i><small class="d-none d-sm-block">Frame</small></div>
-					<div class="tool "><i class="fa fa-font"></i><small class="d-none d-sm-block">Add Text</small></div>
-				
-
-				<div class="float-right" id="sidePanelToggle" data-on=""><i class="fa fa-star" style="font-size:30px;"></i></div>
-			</div>
-
-         	
-        
-		</div>
+    <div class="container-flued" >
+		
+        <div style="text-align:center;" class="col-sm-12" >
+   
+   
+          <div class="panel panel-info" >
+            <div class="panel-heading">
+              <h3 class="panel-title">Sheena Shrestha
+              <span style="float:right">
+                <button class="btn btn-primary">Save</button>
+              </span>
+              </h3>
+              
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="img/emptyProfile.png" height=150 width=150 class="img-circle img-responsive"> </div>
+                
+                
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Department:</td>
+                        <td>Programming</td>
+                      </tr>
+                      <tr>
+                        <td>Hire date:</td>
+                        <td>06/23/2013</td>
+                      </tr>
+                      <tr>
+                        <td>Date of Birth</td>
+                        <td>01/24/1988</td>
+                      </tr>
+                   
+                             <tr>
+                        <td>Gender</td>
+                        <td>Female</td>
+                      </tr>
+                        <tr>
+                        <td>Home Address</td>
+                        <td>Kathmandu,Nepal</td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><a href="mailto:info@support.com">info@support.com</a></td>
+                      </tr>
+                        <td>Phone Number</td>
+                        <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
+                        </td>
+                           
+                      </tr>
+                     
+                    </tbody>
+                  </table>
+                  
+                  
+                </div>
+              </div>
+            </div>
+                
+            
+          </div>
+        </div>
+      </div>
 	</div>
  
 
 
 
-<script src="vendor/snap-svg/snap.svg.js"></script>
 
-<script src="js/ieditor.js"></script>
 </asp:Content>
 
