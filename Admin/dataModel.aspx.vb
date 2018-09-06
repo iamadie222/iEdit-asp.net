@@ -59,7 +59,8 @@ Partial Class Admin_dataModel
             Dim res = db.sqlQueryJson("select * from users")
             Response.Write(res)
         ElseIf Request.Params("listUserPhotos") <> "" Then
-
+            Dim res = db.sqlQueryJson("select id,name,(select username from users where id=user_photos.user_id) as username from user_photos")
+            Response.Write(res)
         ElseIf Request.Params("userStatusChange") <> "" Then
 
             Dim userId = Request.Params("userStatusChange")

@@ -5,21 +5,109 @@ $(document).ready(function(){
 	window.ie=new iEditor($("#mainSvg")[0]);
 	$("#uploadPhoto").change(onUploadPhoto);
 	$("#sidePanelToggle").click(onSidePanelToggle);
+    loadAssets();
 });
 
+
+/*action functions*/
+
+function actionCrop(){
+
+}
+function actionResize(){
+
+}
+function actionClipart(){
+    sidePanelOn();
+
+}
+function actionFrame(){
+    sidePanelOn();
+}
+function actionText(){
+    var pText=prompt("Text to insert");
+    ie.addText(pText);
+}
+function actionDownload(){
+    getPngFromSvg($("#mainSvg")[0],500,function(imgUri){
+        triggerDownload(imgUri,"image-ieditor.png");
+    });
+}
+function actionSave(){
+    window.user_photo_name=prompt("Enter Name: ",window.user_photo_name);
+    getPngFromSvg($("#mainSvg")[0],500,function(imgUri){
+        $.ajax({
+            url: "dataModel.aspx",
+            type: "POSt",
+            data:{
+                image: imgUri.replace('data:image/png;base64,', ''),
+                user_photo: window.user_photo,
+                user_photo_name: window.user_photo_name
+            },
+            success:function(data){
+                console.log(data);
+                if(data.indexOf("success") >=0){
+                    window.user_photo=data.split(":")[1];
+                    alert("saved successfully");
+                }
+                else{
+                    alert("problem in saving image");
+                }
+                
+            },
+            error:function(err){
+                console.log(err.responseText);
+            }
+        });
+    });    
+}
+/*action functions*/
+
+
+
+function loadAssets(){
+    $.ajax({
+        url: "dataModel.aspx",
+        data:{
+            listCliparts: "true"
+        },
+        success:function(data){
+            window.allCliparts=JSON.parse(data);
+        },
+        error:function(err){
+            console.log(err.responseText);
+        }
+    });
+    $.ajax({
+        url: "dataModel.aspx",
+        data:{
+            listFrames: "true"
+        },
+        success:function(data){
+            window.allFrames=JSON.parse(data);
+        },
+        error:function(err){
+            console.log(err.responseText);
+        }
+    });
+}
 function onSidePanelToggle(){
-	
 	if(!Boolean($(this).attr("data-on"))){
-		sidePanel.style.right="0px";
-		$(this).attr("data-on","true");
-		
+		sidePanelOn();
 	}
 	else{
-		sidePanel.style.right="-300px";
-		$(this).attr("data-on","");
+	    sidePanelOff();	
 		
 	}
 	
+}
+function sidePanelOn(){
+    sidePanel.style.right="0px";
+	$(this).attr("data-on","true");
+}
+function sidePanelOff(){
+    sidePanel.style.right="-300px";
+	$(this).attr("data-on","");
 }
 function onUploadPhoto(){
 	var r=new FileReader();
@@ -412,3 +500,39 @@ function iEditor(currSvg){
     
 }
 
+function getPngFromSvg(currSvg,resolution,onDone){
+	var newSvg=currSvg.cloneNode(true);
+	var pngCanvas=document.createElement("canvas");
+	window.can=pngCanvas;
+	newSvg.setAttribute("height",resolution+"px");
+	newSvg.setAttribute("width",resolution+"px");
+	pngCanvas.setAttribute("height",resolution+"px");
+	pngCanvas.setAttribute("width",resolution+"px");
+	var svgString = new XMLSerializer().serializeToString(newSvg);
+    var ctx = pngCanvas.getContext("2d");
+    var DOMURL = self.URL || self.webkitURL || self;
+    var img = new Image();
+    var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+    var url = DOMURL.createObjectURL(svg);
+    img.src = url;
+    img.onload=function(){
+    	ctx.drawImage(img, 0, 0);
+    	var png = pngCanvas.toDataURL("image/png");
+    	DOMURL.revokeObjectURL(url);
+    	onDone(png);
+    }
+}
+
+function triggerDownload (imgURI,name) {
+    var evt = new MouseEvent('click', {
+        view: window,
+        bubbles: false,
+        cancelable: true
+    });
+
+    var a = document.createElement('a');
+    a.setAttribute('download', name+'.png');
+    a.setAttribute('href', imgURI);
+    a.setAttribute('target', '_blank');
+    a.dispatchEvent(evt);
+}
