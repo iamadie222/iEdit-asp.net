@@ -47,19 +47,66 @@
 		</div>
 		<div class="row">
 			<div class="tool-area container-flued">
-					<div class="tool " onclick="actionCrop()"><i class="fa fa-crop"></i><small class="d-none d-sm-block">Crop</small></div>
-					<div class="tool " onclick="actionResize()"><i class="fa fa-expand-arrows-alt"></i><small class="d-none d-sm-block">Resize</small></div>
-					<div class="tool " onclick="actionClipart()"><i class="fa fa-asterisk"></i><small class="d-none d-sm-block">Clipart</small></div>
-					<div class="tool " onclick="actionFrame()"><i class="far fa-square"></i><small class="d-none d-sm-block">Frame</small></div>
-					<div class="tool " onclick="actionText()"><i class="fa fa-font"></i><small class="d-none d-sm-block">Add Text</small></div>
-					<div class="tool " onclick="actionDownload()"><i class="fa fa-download"></i><small class="d-none d-sm-block">Download</small></div>
-					<div class="tool " onclick="actionSave()"><i class="fa fa-save"></i><small class="d-none d-sm-block">Save</small></div>
-				<div class="float-right" id="sidePanelToggle" data-on=""><i class="fa fa-star" style="font-size:30px;"></i></div>
+					<div class="btn btn-info" onclick="actionCrop()"><i class="fa fa-crop"></i><small class="d-none d-sm-block">Crop</small></div>
+					<div class="btn btn-info" onclick="actionResize()"><i class="fa fa-expand-arrows-alt"></i><small class="d-none d-sm-block">Resize</small></div>
+					<div class="btn  btn-info" data-toggle="modal" data-target="#clipartModel"><i class="fa fa-asterisk"></i><small class="d-none d-sm-block">Clipart</small></div>
+					<div class="btn  btn-info" data-toggle="modal" data-target="#frameModel"><i class="far fa-square"></i><small class="d-none d-sm-block">Frame</small></div>
+					<div class="btn btn-info" onclick="actionText()"><i class="fa fa-font"></i><small class="d-none d-sm-block">Add Text</small></div>
+					<div class="btn btn-success" onclick="actionDownload()"><i class="fa fa-download"></i><small class="d-none d-sm-block">Download</small></div>
+					<div class="btn btn-success" onclick="actionSave()"><i class="fa fa-save"></i><small class="d-none d-sm-block">Save</small></div>
+				
+                 
 			</div>
 
          	
         
 		</div>
+         <!-- Modal -->
+          <div class="modal fade" id="frameModel" role="dialog" style="width:100%; height:600px;">
+            <div class="modal-dialog" style="max-width:100%;">
+    
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  
+                  <h4 class="modal-title">Frames</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="frameBody">
+                    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+      
+            </div>
+          </div>
+
+
+          
+          <!-- Modal -->
+          <div class="modal fade" id="clipartModel" role="dialog"  style="width:100%; height:600px;">
+            <div class="modal-dialog" style="max-width:100%;text-align:center;">
+    
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  
+                  <h4 class="modal-title">Cliparts</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="clipartBody">
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+      
+            </div>
+          </div>
+           
 	</div>
  
 

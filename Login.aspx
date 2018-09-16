@@ -79,7 +79,7 @@
                         console.log(data)
                         if (data == "success") {
                             notie.alert({ text: "Successfully Logged In.....", type: 1 });
-                            setTimeout(function () { window.location.assign("Profile.aspx"); }, 1000)
+                            setTimeout(function () { window.location.assign("MyGallery.aspx"); }, 1000)
                         }
                         else {
                             if (data == "userNotFound") {

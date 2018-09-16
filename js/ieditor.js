@@ -63,6 +63,41 @@ function actionSave(){
 }
 /*action functions*/
 
+function insertClipart(e){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    }   
+    $("#clipartModel").modal("hide");
+    return;
+    getDataUri(e.src,function(imgUri){
+        //console.log(imgUri);
+        window.tSvg=document.createElement("svg");
+        Snap(tSvg).image(imgUri,0,0,200,150);
+        ie.addSvg(tSvg);
+    });
+}
+function insertFrame(e){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    }   
+    $("#frameModel").modal("hide");
+    return;
+    getDataUri(e.src,function(imgUri){
+        //console.log(imgUri);
+        window.tSvg=document.createElement("svg");
+        Snap(tSvg).image(imgUri,0,0,200,150);
+        Snap(tSvg).attr({height:500,width:500,viewBox:"0 0 500 500",x:0,y:0});
+        ie.addSvg(tSvg);
+    });
+}
+function isLoaded(){
+    if($(mainSvg).data("loaded")=="1"){
+        return true;
+    }
+    return false;
+}
 
 
 function loadAssets(){
@@ -73,6 +108,11 @@ function loadAssets(){
         },
         success:function(data){
             window.allCliparts=JSON.parse(data);
+            $("#clipartBody").empty();
+            for(c of allCliparts){
+                $("#clipartBody").append("<div class='asset-item'><img src='assets/"+c.id+".png' onclick='insertClipart(this)' data-id='"+c.id+"'></div>");
+            }
+            
         },
         error:function(err){
             console.log(err.responseText);
@@ -85,6 +125,10 @@ function loadAssets(){
         },
         success:function(data){
             window.allFrames=JSON.parse(data);
+             $("#frameBody").empty();
+            for(c of allFrames){
+                $("#frameBody").append("<div class='asset-item'><img src='assets/"+c.id+".png' onclick='insertFrame(this)' data-id='"+c.id+"'></div>");
+            }
         },
         error:function(err){
             console.log(err.responseText);
@@ -120,6 +164,7 @@ function onUploadPhoto(){
 			window.i=img;
 		console.log(img.height,img.width)
 		ie.addBackgroundImg(d.target.result,img.height,img.width);
+
 		}
 		
 
@@ -141,10 +186,26 @@ function crop(){
 function resize(){
 
 }
-function addEffects(){
 
+function getDataUri(url, callback) {
+    var image = new Image();
+
+    image.onload = function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+        canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+        canvas.getContext('2d').drawImage(this, 0, 0);
+
+        // Get raw image data
+        callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+        // ... or get as Data URI
+        callback(canvas.toDataURL('image/png'));
+    };
+
+    image.src = url;
 }
-
 function iEditor(currSvg){
 	var snap=Snap(currSvg);
 	var rectHmdVar=null;
@@ -341,11 +402,26 @@ function iEditor(currSvg){
 
 
 	iEditor.prototype.addBackgroundImg=function(src,height,width){
-		window.te=snap.image(src,0,0,width,height);
-		
+		$(currSvg).data("loaded","1");
+        window.te=snap.image(src,0,0,width,height);
 		snap.attr({viewBox:"0 0 "+width+" "+height,height:height,width:width});
 	}
-	
+    iEditor.prototype.addImg=function(src,height,width){
+		var g=Snap(currSvg).g();
+        var te=snap.image(src,0,0,width,height);
+    	g.node.appendChild(te)
+		svgs.push(te);
+		setAllMouseEvents();
+	}
+	iEditor.prototype.addSvg=function(svg){
+    	svg.removeAttribute("id");
+    	svg.removeAttribute("xmlns");
+    	svg.setAttribute("preserveAspectRatio","none");
+    	var g=Snap(currSvg).g();
+    	g.node.appendChild(svg)
+		svgs.push(svg);
+		setAllMouseEvents();
+    }
 	iEditor.prototype.addText1=function(text){
 		
 		var cSvg=snap.svg(400,400,50,50,0,0,500,60);
@@ -393,15 +469,7 @@ function iEditor(currSvg){
 	iEditor.prototype.rectHmdVar=function(){
 		return rectHmdVar;
 	}
-	iEditor.prototype.addSvg=function(svg){
-    	svg.removeAttribute("id");
-    	svg.removeAttribute("xmlns");
-    	svg.setAttribute("preserveAspectRatio","none");
-    	var g=Snap(currSvg).g();
-    	g.node.appendChild(svg)
-		svgs.push(svg);
-		setAllMouseEvents();
-    }
+	
     iEditor.prototype.addSvgData=function(svgData){
     	var temp=document.createElement("div");
     	temp.innerHTML=svgData;

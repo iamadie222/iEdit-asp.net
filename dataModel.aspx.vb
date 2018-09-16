@@ -27,7 +27,7 @@ Partial Class Admin_dataModel
             Dim rc = db.dbScalar("select password from users where username='" & username & "'")
 
             If rc <> "0" Then
-                If rc = password Then
+                If String.Equals(rc, password) Then
                     Session("userLogged") = db.dbScalar("select id from users where username='" & username & "'")
                     Response.Write("success")
                 Else
