@@ -5,17 +5,40 @@ $(document).ready(function(){
 	window.ie=new iEditor($("#mainSvg")[0]);
 	$("#uploadPhoto").change(onUploadPhoto);
 	$("#sidePanelToggle").click(onSidePanelToggle);
+    $("#btnResizeNow").click(btnResizeClick);
+    $("#btnCropNow").click(btnCropClick);
+    $("#cropModel").on('shown.bs.modal',modelCropShown);
+    $("#resizeModel").on('shown.bs.modal',modelResizeShown);
     loadAssets();
 });
 
+function modelCropShown(){
+    
+}
+function modelResizeShown(){
+    $("#oldHeight").val(Snap(mainSvg).attr("height"))
+    $("#oldWidth").val(Snap(mainSvg).attr("width"))
+}
+function btnCropClick(){
+    crop($("#cropX1").val(),$("#cropY1").val(),$("#cropX2").val(),$("#cropY2").val());
+    $("#cropModel").modal("hide");
+}
+function btnResizeClick(){
+    resize($("#newHeight").val(),$("#newWidth").val());
+    $("#resizeModel").modal("hide");
+}
 
 /*action functions*/
 
 function actionCrop(){
-
+    $("#cropModel").modal("show");
 }
 function actionResize(){
-
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    }
+    $("#resizeModel").modal("show");
 }
 function actionClipart(){
     sidePanelOn();
@@ -29,13 +52,21 @@ function actionText(){
     ie.addText(pText);
 }
 function actionDownload(){
-    getPngFromSvg($("#mainSvg")[0],500,function(imgUri){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    } 
+    getPngFromSvg($("#mainSvg")[0],mainSvg.height.baseVal.value,mainSvg.width.baseVal.value,function(imgUri){
         triggerDownload(imgUri,"image-ieditor.png");
     });
 }
 function actionSave(){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    } 
     window.user_photo_name=prompt("Enter Name: ",window.user_photo_name);
-    getPngFromSvg($("#mainSvg")[0],500,function(imgUri){
+    getPngFromSvg($("#mainSvg")[0],mainSvg.height.baseVal.value,mainSvg.width.baseVal.value,function(imgUri){
         $.ajax({
             url: "dataModel.aspx",
             type: "POSt",
@@ -180,11 +211,13 @@ function addText(){
 function addFrame(){
 
 }
-function crop(){
-
+function crop(x1,y1,x2,y2){
+    Snap(mainSvg).attr("viewBox",""+x1+" "+y1+" "+x2+" "+y2);
+    resize(x2-x1,y2-y1);
 }
-function resize(){
-
+function resize(h,w){
+    Snap(mainSvg).attr("height",h);
+    Snap(mainSvg).attr("width",w);
 }
 
 function getDataUri(url, callback) {
@@ -568,14 +601,14 @@ function iEditor(currSvg){
     
 }
 
-function getPngFromSvg(currSvg,resolution,onDone){
+function getPngFromSvg(currSvg,h,w,onDone){
 	var newSvg=currSvg.cloneNode(true);
 	var pngCanvas=document.createElement("canvas");
 	window.can=pngCanvas;
-	newSvg.setAttribute("height",resolution+"px");
-	newSvg.setAttribute("width",resolution+"px");
-	pngCanvas.setAttribute("height",resolution+"px");
-	pngCanvas.setAttribute("width",resolution+"px");
+	newSvg.setAttribute("height",h+"px");
+	newSvg.setAttribute("width",w+"px");
+	pngCanvas.setAttribute("height",h+"px");
+	pngCanvas.setAttribute("width",w+"px");
 	var svgString = new XMLSerializer().serializeToString(newSvg);
     var ctx = pngCanvas.getContext("2d");
     var DOMURL = self.URL || self.webkitURL || self;

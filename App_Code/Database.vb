@@ -24,13 +24,14 @@ Public Class Database
     End Function
     Function dbScalar(ByVal query As String) As String
         Dim cmd As New SqlCommand(query, con)
-        Dim res = -1
+        Dim res = "-1"
         Try
             con.Open()
             res = cmd.ExecuteScalar()
             con.Close()
             Return res
         Catch ex As Exception
+            MsgBox(ex.Message & " " & query)
             Return res
         Finally
             con.Close()

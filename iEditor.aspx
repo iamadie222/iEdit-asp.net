@@ -106,7 +106,96 @@
       
             </div>
           </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="resizeModel" role="dialog">
+            <div class="modal-dialog" >
+    
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  
+                  <h4 class="modal-title">Resize</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" >
+                    <h2>Old Height x Width:</h2>
+                    <div class="row">
+                        <div class="col-6">
+                            <input class="form-control" type="number" id="oldHeight" /> 
+                        </div>
+                         <div class="col-6">
+                            <input class="form-control" type="number" id="oldWidth" />
+                        </div>
+                    </div>
+                    <h2>new Height x Width:</h2>
+                    <div class="row">
+                        <div class="col-6">
+                            <input class="form-control" type="number" id="newHeight" /> 
+                        </div>
+                         <div class="col-6">
+                            <input class="form-control" type="number" id="newWidth" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                        <br />
+                            <button class="btn btn-primary" id="btnResizeNow">Resize</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+      
+            </div>
+          </div>
            
+           <!-- Modal -->
+          <div class="modal fade" id="cropModel" role="dialog">
+            <div class="modal-dialog">
+    
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  
+                  <h4 class="modal-title">Crop</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="Div3">
+                     <h2>set values:</h2>
+                    <div class="row">
+                        <div class="col-6">
+                            <input class="form-control" type="number" id="cropX1"  placeholder="Top Left"/> 
+                        </div>
+                         <div class="col-6">
+                            <input class="form-control" type="number" id="cropY1"  placeholder="Top Right" />
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <input class="form-control" type="number" id="cropX2"  placeholder="Bottom Left" /> 
+                        </div>
+                         <div class="col-6">
+                            <input class="form-control" type="number" id="cropY2"   placeholder="Bottom Right"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                        <br />
+                            <button class="btn btn-primary" id="btnCropNow">Crop</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+      
+            </div>
+          </div>
 	</div>
  
 
