@@ -27,12 +27,7 @@ function loadIntoTable(jData,start,end) {
             break;
         }
         var status ;
-        if (jData[i].status == 1) {
-            status = "<button class='btn btn-info' style='margin-right:20px;' data-status='"+jData[i].status+"' onclick='toggleRequest(this,"+jData[i].id+")' onmouseover='statusToggle(this)'>Active</button>";
-        }
-        else {
-            status = "<button class='btn btn-info' style='margin-right:20px;' data-status='" + jData[i].status + "' onclick='toggleRequest(this," + jData[i].id + ")' onmouseover='statusToggle(this)'>Banned</button>";
-        }
+       
         $("#acListBody").append('<tr> \
 						<td>' + jData[i].id + '</td>\
 						<td>' + jData[i].name + '</td>\
@@ -40,7 +35,8 @@ function loadIntoTable(jData,start,end) {
 						<td> <img src="../user_photos/' + jData[i].id + '.png" height=100></td>\
 						<td>'
 
-						+ "<a class='btn btn-info' style='margin-right:20px;' href='#' >View</a>" +
+						+ "<a class='btn btn-info' style='margin-right:20px;' href='#' >View</a>"
+						+ "<a class='btn btn-danger' style='margin-right:20px;' href='#' onclick='deleteUserPhoto(" + jData[i].id + ")' >Delete</a>" +
 	
 						'</td>\
 					</tr>');
@@ -105,21 +101,13 @@ function loadData() {
     });
 }
 
-
-function toggleRequest(e,id) {
-    var st = parseInt($(e).attr("data-status"));
+function deleteUserPhoto(id) {
     $.ajax({
         url: "dataModel.aspx",
         type: "POST",
-        data: { userStatusChange: id, status: (st + 1) % 2 },
+        data: { deleteUserPhoto: id },
         success: function (data) {
-            if (data == "success") {
-                loadData();
-            }
-            else {
-                alert("cant change status");
-                console.log(data);
-            }
+            loadData();
         },
         error: function () {
             alert("Problem with request");
@@ -127,23 +115,3 @@ function toggleRequest(e,id) {
     });
 }
 
-function statusToggle(e) {
-    e.onmouseout = statusToggleOut;
-    var st = parseInt($(e).attr("data-status"));
-    if (st == 0) {
-        $(e).text("Active It");
-    }
-    else {
-        $(e).text("Ban It");
-    }
-}
-
-function statusToggleOut() {
-    var st = parseInt($(this).attr("data-status"));
-    if (st == 1) {
-        $(this).text("Active");
-    }
-    else {
-        $(this).text("Banned");
-    }
-}

@@ -71,8 +71,8 @@ Partial Class Admin_dataModel
             Else
                 Response.Write("error")
             End If
-        ElseIf Request.Params("deleteAsset") <> "" Then
-
+        ElseIf Request.Params("deleteUserPhoto") <> "" Then
+            Response.Write(db.dbNonQuery("delete from user_photos where id=" & Request.Params("deleteUserPhoto")))
         ElseIf Request.Params("deleteAsset") <> "" Then
 
         End If

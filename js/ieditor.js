@@ -543,7 +543,7 @@ function iEditor(currSvg){
     }
     iEditor.prototype.addText=function(text){
     	var g=Snap(currSvg).g();
-    	var cSvg=g.svg(400,400,50,50,0,0,500,60);
+    	var cSvg=g.svg(0,0,50,50,0,0,500,60);
     	window.txt=cSvg.text(0,45,text).attr({"font-size":"50","id":"txtHmd","font-family":"LKLUG"});
     	txt.node.style.cursor="pointer";
     	cSvg.node.width.baseVal.value=txt.getBBox().width;
