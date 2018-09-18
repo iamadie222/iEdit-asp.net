@@ -45,28 +45,23 @@
             <li class="nav-item">
               <a class="nav-link" href="iEditor.aspx">iEditor</a>
             </li>
-            
-            
-
-            <?php 
-            	if(isset($_SESSION['userLogged'])){
-            		//echo "welcome ".$_SESSION['userLogged'];
-			?>
-				<li class="nav-item">
-	              <a class="nav-link" href="logout.php">Logout</a>
+            <% If Session("userLogged") <> "" Then%>
+                
+                <li class="nav-item" >
+	              <a class="nav-link" href="MyGallery.aspx">My Gallery</a>
 	            </li>
-            <?php
-            	}else{
-			?>
+                
+                <li class="nav-item" >
+	              <a class="nav-link" href="dataModel.aspx?userLogout=true">Logout</a>
+	            </li>
+            <% Else%>
 				<li class="nav-item">
 	              <a class="nav-link" href="Login.aspx">Login</a>
 	            </li>
 	            <li class="nav-item">
 	              <a class="nav-link" href="Register.aspx">Register</a>
 	            </li> 
-            <?php
-            	}
-            ?>           
+            <% End If%>     
           </ul>
         </div>
       </div>

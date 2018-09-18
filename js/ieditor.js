@@ -5,21 +5,184 @@ $(document).ready(function(){
 	window.ie=new iEditor($("#mainSvg")[0]);
 	$("#uploadPhoto").change(onUploadPhoto);
 	$("#sidePanelToggle").click(onSidePanelToggle);
+    $("#btnResizeNow").click(btnResizeClick);
+    $("#btnCropNow").click(btnCropClick);
+    $("#cropModel").on('shown.bs.modal',modelCropShown);
+    $("#resizeModel").on('shown.bs.modal',modelResizeShown);
+    loadAssets();
 });
 
+function modelCropShown(){
+    
+}
+function modelResizeShown(){
+    $("#oldHeight").val(Snap(mainSvg).attr("height"))
+    $("#oldWidth").val(Snap(mainSvg).attr("width"))
+}
+function btnCropClick(){
+    crop($("#cropX1").val(),$("#cropY1").val(),$("#cropX2").val(),$("#cropY2").val());
+    $("#cropModel").modal("hide");
+}
+function btnResizeClick(){
+    resize($("#newHeight").val(),$("#newWidth").val());
+    $("#resizeModel").modal("hide");
+}
+
+/*action functions*/
+
+function actionCrop(){
+    $("#cropModel").modal("show");
+}
+function actionResize(){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    }
+    $("#resizeModel").modal("show");
+}
+function actionClipart(){
+    sidePanelOn();
+
+}
+function actionFrame(){
+    sidePanelOn();
+}
+function actionText(){
+    var pText=prompt("Text to insert");
+    ie.addText(pText);
+}
+function actionDownload(){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    } 
+    getPngFromSvg($("#mainSvg")[0],mainSvg.height.baseVal.value,mainSvg.width.baseVal.value,function(imgUri){
+        triggerDownload(imgUri,"image-ieditor.png");
+    });
+}
+function actionSave(){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    } 
+    window.user_photo_name=prompt("Enter Name: ",window.user_photo_name);
+    getPngFromSvg($("#mainSvg")[0],mainSvg.height.baseVal.value,mainSvg.width.baseVal.value,function(imgUri){
+        $.ajax({
+            url: "dataModel.aspx",
+            type: "POSt",
+            data:{
+                image: imgUri.replace('data:image/png;base64,', ''),
+                user_photo: window.user_photo,
+                user_photo_name: window.user_photo_name
+            },
+            success:function(data){
+                console.log(data);
+                if(data.indexOf("success") >=0){
+                    window.user_photo=data.split(":")[1];
+                    alert("saved successfully");
+                }
+                else{
+                    alert("problem in saving image");
+                }
+                
+            },
+            error:function(err){
+                console.log(err.responseText);
+            }
+        });
+    });    
+}
+/*action functions*/
+
+function insertClipart(e){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    }   
+    $("#clipartModel").modal("hide");
+    return;
+    getDataUri(e.src,function(imgUri){
+        //console.log(imgUri);
+        window.tSvg=document.createElement("svg");
+        Snap(tSvg).image(imgUri,0,0,200,150);
+        ie.addSvg(tSvg);
+    });
+}
+function insertFrame(e){
+    if(!isLoaded()){
+        notie.alert({ text: "Choose photo first", type: 2 });
+        return;
+    }   
+    $("#frameModel").modal("hide");
+    return;
+    getDataUri(e.src,function(imgUri){
+        //console.log(imgUri);
+        window.tSvg=document.createElement("svg");
+        Snap(tSvg).image(imgUri,0,0,200,150);
+        Snap(tSvg).attr({height:500,width:500,viewBox:"0 0 500 500",x:0,y:0});
+        ie.addSvg(tSvg);
+    });
+}
+function isLoaded(){
+    if($(mainSvg).data("loaded")=="1"){
+        return true;
+    }
+    return false;
+}
+
+
+function loadAssets(){
+    $.ajax({
+        url: "dataModel.aspx",
+        data:{
+            listCliparts: "true"
+        },
+        success:function(data){
+            window.allCliparts=JSON.parse(data);
+            $("#clipartBody").empty();
+            for(c of allCliparts){
+                $("#clipartBody").append("<div class='asset-item'><img src='assets/"+c.id+".png' onclick='insertClipart(this)' data-id='"+c.id+"'></div>");
+            }
+            
+        },
+        error:function(err){
+            console.log(err.responseText);
+        }
+    });
+    $.ajax({
+        url: "dataModel.aspx",
+        data:{
+            listFrames: "true"
+        },
+        success:function(data){
+            window.allFrames=JSON.parse(data);
+             $("#frameBody").empty();
+            for(c of allFrames){
+                $("#frameBody").append("<div class='asset-item'><img src='assets/"+c.id+".png' onclick='insertFrame(this)' data-id='"+c.id+"'></div>");
+            }
+        },
+        error:function(err){
+            console.log(err.responseText);
+        }
+    });
+}
 function onSidePanelToggle(){
-	
 	if(!Boolean($(this).attr("data-on"))){
-		sidePanel.style.right="0px";
-		$(this).attr("data-on","true");
-		
+		sidePanelOn();
 	}
 	else{
-		sidePanel.style.right="-300px";
-		$(this).attr("data-on","");
+	    sidePanelOff();	
 		
 	}
 	
+}
+function sidePanelOn(){
+    sidePanel.style.right="0px";
+	$(this).attr("data-on","true");
+}
+function sidePanelOff(){
+    sidePanel.style.right="-300px";
+	$(this).attr("data-on","");
 }
 function onUploadPhoto(){
 	var r=new FileReader();
@@ -32,6 +195,7 @@ function onUploadPhoto(){
 			window.i=img;
 		console.log(img.height,img.width)
 		ie.addBackgroundImg(d.target.result,img.height,img.width);
+
 		}
 		
 
@@ -47,16 +211,34 @@ function addText(){
 function addFrame(){
 
 }
-function crop(){
-
+function crop(x1,y1,x2,y2){
+    Snap(mainSvg).attr("viewBox",""+x1+" "+y1+" "+x2+" "+y2);
+    resize(x2-x1,y2-y1);
 }
-function resize(){
-
-}
-function addEffects(){
-
+function resize(h,w){
+    Snap(mainSvg).attr("height",h);
+    Snap(mainSvg).attr("width",w);
 }
 
+function getDataUri(url, callback) {
+    var image = new Image();
+
+    image.onload = function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+        canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+        canvas.getContext('2d').drawImage(this, 0, 0);
+
+        // Get raw image data
+        callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+        // ... or get as Data URI
+        callback(canvas.toDataURL('image/png'));
+    };
+
+    image.src = url;
+}
 function iEditor(currSvg){
 	var snap=Snap(currSvg);
 	var rectHmdVar=null;
@@ -253,11 +435,26 @@ function iEditor(currSvg){
 
 
 	iEditor.prototype.addBackgroundImg=function(src,height,width){
-		window.te=snap.image(src,0,0,width,height);
-		
+		$(currSvg).data("loaded","1");
+        window.te=snap.image(src,0,0,width,height);
 		snap.attr({viewBox:"0 0 "+width+" "+height,height:height,width:width});
 	}
-	
+    iEditor.prototype.addImg=function(src,height,width){
+		var g=Snap(currSvg).g();
+        var te=snap.image(src,0,0,width,height);
+    	g.node.appendChild(te)
+		svgs.push(te);
+		setAllMouseEvents();
+	}
+	iEditor.prototype.addSvg=function(svg){
+    	svg.removeAttribute("id");
+    	svg.removeAttribute("xmlns");
+    	svg.setAttribute("preserveAspectRatio","none");
+    	var g=Snap(currSvg).g();
+    	g.node.appendChild(svg)
+		svgs.push(svg);
+		setAllMouseEvents();
+    }
 	iEditor.prototype.addText1=function(text){
 		
 		var cSvg=snap.svg(400,400,50,50,0,0,500,60);
@@ -305,15 +502,7 @@ function iEditor(currSvg){
 	iEditor.prototype.rectHmdVar=function(){
 		return rectHmdVar;
 	}
-	iEditor.prototype.addSvg=function(svg){
-    	svg.removeAttribute("id");
-    	svg.removeAttribute("xmlns");
-    	svg.setAttribute("preserveAspectRatio","none");
-    	var g=Snap(currSvg).g();
-    	g.node.appendChild(svg)
-		svgs.push(svg);
-		setAllMouseEvents();
-    }
+	
     iEditor.prototype.addSvgData=function(svgData){
     	var temp=document.createElement("div");
     	temp.innerHTML=svgData;
@@ -412,3 +601,39 @@ function iEditor(currSvg){
     
 }
 
+function getPngFromSvg(currSvg,h,w,onDone){
+	var newSvg=currSvg.cloneNode(true);
+	var pngCanvas=document.createElement("canvas");
+	window.can=pngCanvas;
+	newSvg.setAttribute("height",h+"px");
+	newSvg.setAttribute("width",w+"px");
+	pngCanvas.setAttribute("height",h+"px");
+	pngCanvas.setAttribute("width",w+"px");
+	var svgString = new XMLSerializer().serializeToString(newSvg);
+    var ctx = pngCanvas.getContext("2d");
+    var DOMURL = self.URL || self.webkitURL || self;
+    var img = new Image();
+    var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+    var url = DOMURL.createObjectURL(svg);
+    img.src = url;
+    img.onload=function(){
+    	ctx.drawImage(img, 0, 0);
+    	var png = pngCanvas.toDataURL("image/png");
+    	DOMURL.revokeObjectURL(url);
+    	onDone(png);
+    }
+}
+
+function triggerDownload (imgURI,name) {
+    var evt = new MouseEvent('click', {
+        view: window,
+        bubbles: false,
+        cancelable: true
+    });
+
+    var a = document.createElement('a');
+    a.setAttribute('download', name+'.png');
+    a.setAttribute('href', imgURI);
+    a.setAttribute('target', '_blank');
+    a.dispatchEvent(evt);
+}

@@ -12,21 +12,21 @@
         </ol>
         <div class="carousel-inner" role="listbox">
           <!-- Slide One - Set the background image for this slide in the line below -->
-          <div class="carousel-item active" style="background-image: url('img/editor1.jpg')">
+          <div class="carousel-item active" style="background-image: url('img/front_photo_3.png')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Want to edit your Photos?</h3>
               <p>iEdit provide you facility to edit photos without installing any app on your device.</p>
             </div>
           </div>
           <!-- Slide Two - Set the background image for this slide in the line below -->
-          <div class="carousel-item" style="background-image: url('img/editor1.jpg')">
+          <div class="carousel-item" style="background-image: url('img/front_photo_2.png')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Drag and get started.</h3>
               <p>Just drag your photo to our <a href="ieditor.php">iEditor</a> and start editing it.</p>
             </div>
           </div>
           <!-- Slide Three - Set the background image for this slide in the line below 1900 x 1080 -->
-          <div class="carousel-item" style="background-image: url('img/editor1.jpg')">
+          <div class="carousel-item" style="background-image: url('img/front_photo_1.png')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Want some extra?</h3>
               <p>We provide you free clipart that you can add to your photos and make them funkey.</p>
@@ -89,73 +89,9 @@
 
       <!-- Portfolio Section -->
       <h2>User's picks</h2>
+        <asp:Label ID="divPhotos" runat="server" CssClass="row" Text=""></asp:Label>
 
-      <div class="row">
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-          <div class="card h-100">
-            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-            <div class="card-body">
-              <h4 class="card-title">
-                <a href="#">Image name1</a>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-          <div class="card h-100">
-            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-            <div class="card-body">
-              <h4 class="card-title">
-                <a href="#">Image name 2</a>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-          <div class="card h-100">
-            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-            <div class="card-body">
-              <h4 class="card-title">
-                <a href="#">Image name 3</a>
-              </h4>
-              
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-          <div class="card h-100">
-            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-            <div class="card-body">
-              <h4 class="card-title">
-                <a href="#">Image name1</a>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-          <div class="card h-100">
-            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-            <div class="card-body">
-              <h4 class="card-title">
-                <a href="#">Image name 2</a>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-          <div class="card h-100">
-            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-            <div class="card-body">
-              <h4 class="card-title">
-                <a href="#">Image name 3</a>
-              </h4>
-              
-            </div>
-          </div>
-        </div>
-
-        
-      </div>
+  
       <!-- /.row -->
 
       <!-- Features Section -->
@@ -173,7 +109,7 @@
           <p>Drag your image to right side section and get started with your first edit with iEdit</p>
         </div>
         <div class="col-lg-6">
-          <img class="img-fluid rounded" src="http://placehold.it/700x450" alt="">
+          <img class="img-fluid rounded" src="img/editor1.jpg" alt="">
         </div>
       </div>
       <!-- /.row -->
@@ -186,7 +122,7 @@
           <p></p>
         </div>
         <div class="col-md-4">
-          <a class="btn btn-lg btn-secondary btn-block" href="ieditor.php">Open iEditor</a>
+          <a class="btn btn-lg btn-secondary btn-block" href="ieditor.aspx">Open iEditor</a>
         </div>
       </div>
 

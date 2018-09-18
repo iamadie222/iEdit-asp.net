@@ -2,7 +2,7 @@
 Imports System.Data.SqlClient
 Imports System.Data
 Public Class Database
-    Dim con As New SqlConnection("Data Source=.\SQLEXPRESS;AttachDbFilename='C:\Users\hmd\Documents\Visual Studio 2010\iEdit-asp.net\App_Data\Database.mdf';Integrated Security=True;User Instance=True")
+    Dim con As New SqlConnection("Data Source=.\SQLEXPRESS;AttachDbFilename='|DataDirectory|\Database.mdf';Integrated Security=True;User Instance=True")
 
     Function dbNonQuery(ByVal query As String) As Integer
         Dim cmd As New SqlCommand(query, con)
@@ -24,13 +24,14 @@ Public Class Database
     End Function
     Function dbScalar(ByVal query As String) As String
         Dim cmd As New SqlCommand(query, con)
-        Dim res = -1
+        Dim res = "-1"
         Try
             con.Open()
             res = cmd.ExecuteScalar()
             con.Close()
             Return res
         Catch ex As Exception
+            MsgBox(ex.Message & " " & query)
             Return res
         Finally
             con.Close()
