@@ -107,7 +107,7 @@
                     },
                     success: function (data) {
                         if (data == "success") {
-                            notie.alert({ text: "You are not registered. You will be redirect to login page", type: 1 });
+                            notie.alert({ text: "You are registered. You will be redirect to login page", type: 1 });
                             setTimeout(function () {
                                 window.location.assign("Login.aspx");
                             }, 1000);
@@ -122,12 +122,11 @@
                         }
                     },
                     error: function (err) {
-                        console.log(err);
-                        return;
+                        notie.alert({ text: "Server error.", type: 3 });
                         console.log(err.responseText);
                     }
                 });
-                notie.alert({ text: "here to submit form" });
+                //notie.alert({ text: "here to submit form" });
             }
 
             return false;
