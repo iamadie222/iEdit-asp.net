@@ -9,15 +9,15 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    </div>
-    <asp:Label ID="lblUsername" runat="server" Text="Label"></asp:Label>
+        Admin Login</div>
+    <asp:Label ID="lblUsername" runat="server" Text="Username"></asp:Label>
 &nbsp;
         <asp:TextBox ID="txtAdminUsername" runat="server"></asp:TextBox>
     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
         ControlToValidate="txtAdminUsername" ErrorMessage="Enter Username" 
         ForeColor="Red"></asp:RequiredFieldValidator>
     <p>
-        <asp:Label ID="lblPassword" runat="server" Text="Label"></asp:Label>
+        <asp:Label ID="lblPassword" runat="server" Text="Password"></asp:Label>
 &nbsp;
         <asp:TextBox ID="txtAdminPassword" runat="server" Height="27px" TextMode="Password"></asp:TextBox>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
