@@ -1,0 +1,12 @@
+Database Path: |DataDirectory|Database.mdf
+Admin Panel Path: <Host>/admin
+
+
+Admin Login: 
+	Username: admin
+	Password: admin
+User Login:
+
+	Account already created with username “iamadie123” but you can also signup for new account.
+	Username: iamadie123
+	Password: iamadie123
